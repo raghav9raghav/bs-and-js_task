@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task 5</title>
+  <style>
+    .flex {
+      display: flex;
+      gap: 10px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+  <script>
+    function validateForm() {
+      var name = document.getElementById("name");
+      var email = document.getElementById("email");
+      var website = document.getElementById("website");
+      var message = document.getElementById("message");
+      var result = document.getElementById("result");
+
+      // Reset previous error messages and styles
+      resetErrors();
+
+      var isValid = true;
+
+      if (name.value.trim() === "") {
+        setError(name, "This field is required");
+        isValid = false;
+      }
+
+      if (email.value.trim() === "") {
+        setError(email, "A valid email address is required");
+        isValid = false;
+      } else if (!isValidEmail(email.value)) {
+        setError(email, "Invalid email format");
+        isValid = false;
+      }
+
+      if (website.value.trim() !== "" && !isValidURL(website.value)) {
+        setError(website, "Invalid URL format");
+        isValid = false;
+      }
+
+      if (message.value.trim() === "") {
+        setError(message, "This field is required");
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Form is valid, you can submit it or perform further actions here
+        alert("Form submitted successfully");
+      }
+    }
+
+    function setError(element, message) {
+      element.style.border = "2px solid red";
+      var errorElement = document.createElement("p");
+      errorElement.className = "error";
+      errorElement.textContent = message;
+      element.parentElement.appendChild(errorElement);
+    }
+
+    function resetErrors() {
+      var errorElements = document.querySelectorAll(".error");
+      errorElements.forEach(function (errorElement) {
+        errorElement.remove();
+      });
+
+      var formFields = document.querySelectorAll("input, textarea");
+      formFields.forEach(function (field) {
+        field.style.border = "";
+      });
+    }
+
+    function isValidEmail(email) {
+      // Basic email validation using a regular expression
+      var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+      return emailRegex.test(email);
+    }
+
+    function isValidURL(url) {
+      // Basic URL validation using a regular expression
+      var urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+      return urlRegex.test(url);
+    }
+  </script>
+</head>
+<body>
+  <div class="flex">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required />
+  </div>
+  <br />
+  <div class="flex">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required />
+  </div>
+  <br />
+  <div class="flex">
+    <label for="website">Website:</label>
+    <input type="url" id="website" name="website" />
+  </div>
+  <br />
+  <div class="flex">
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" required></textarea>
+  </div>
+  <br />
+
+  <input type="button" value="Submit" onclick="validateForm()" />
+</body>
+</html>
